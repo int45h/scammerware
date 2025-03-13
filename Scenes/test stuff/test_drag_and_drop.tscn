@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://4rfm4hwd1kh"]
+
+[ext_resource type="Texture2D" uid="uid://c43tnbs3ijf6i" path="res://icon.svg" id="1_6wans"]
+[ext_resource type="Script" uid="uid://glcw41qo1m74" path="res://Scripts/Systems/Draggable.cs" id="2_c2ddh"]
+
+[node name="TestDragAndDrop" type="Node2D"]
+
+[node name="Node" type="Node" parent="."]
+
+[node name="Sprite2D2" type="Sprite2D" parent="Node"]
+position = Vector2(696, 256)
+texture = ExtResource("1_6wans")
+script = ExtResource("2_c2ddh")
+
+[node name="Sprite2D" type="Sprite2D" parent="Node"]
+position = Vector2(348, 314)
+texture = ExtResource("1_6wans")
+script = ExtResource("2_c2ddh")

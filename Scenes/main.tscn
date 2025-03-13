@@ -1,0 +1,139 @@
+[gd_scene load_steps=14 format=3 uid="uid://dmk867o55eni"]
+
+[ext_resource type="Script" uid="uid://lpbosace4u5q" path="res://Scripts/Misc/MainWorld.cs" id="1_bo1nx"]
+[ext_resource type="Script" uid="uid://cbdkok8mxhv0l" path="res://Scripts/Misc/GameLayer.cs" id="1_jjgbg"]
+[ext_resource type="Shader" uid="uid://biwlrpt4a4bc4" path="res://Shaders/bomb_bar.gdshader" id="3_8gbba"]
+[ext_resource type="Shader" uid="uid://c6hwn75cmao84" path="res://Shaders/screen_shader_distort.gdshader" id="3_344ge"]
+[ext_resource type="Script" uid="uid://ctisrnintp5r1" path="res://Scripts/Misc/UILayer.cs" id="3_jjvhh"]
+[ext_resource type="Shader" uid="uid://be3shlf5rt7mc" path="res://Shaders/screen_shader.gdshader" id="5_kry3j"]
+[ext_resource type="Script" uid="uid://c7vbrs1iuhnoq" path="res://Scripts/Misc/GameText.cs" id="6_6bp64"]
+[ext_resource type="FontFile" uid="uid://b2o1ibxmk4bhi" path="res://Themes/Fonts/PixulBrush.ttf" id="7_344ge"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ynf5e"]
+shader = ExtResource("3_344ge")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_21xkr"]
+shader = ExtResource("5_kry3j")
+shader_parameter/show = 0
+shader_parameter/timestamp = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jjvhh"]
+shader = ExtResource("3_8gbba")
+shader_parameter/progress = 1.0
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_jjvhh"]
+
+[sub_resource type="Theme" id="Theme_kry3j"]
+default_font = ExtResource("7_344ge")
+default_font_size = 50
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_bo1nx")
+
+[node name="GameLayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("UILayer", "ScreenEffects")]
+script = ExtResource("1_jjgbg")
+UILayer = NodePath("../UILayer")
+ScreenEffects = NodePath("../Control/ColorRect")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="GameLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="GameLayer/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Distortion" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Distortion"]
+material = SubResource("ShaderMaterial_ynf5e")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.552956, 0.552956, 0.552956, 1)
+
+[node name="Control" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+material = SubResource("ShaderMaterial_21xkr")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.552956, 0.552956, 0.552956, 1)
+
+[node name="UILayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("Text")]
+script = ExtResource("3_jjvhh")
+Text = NodePath("ZingoZongo")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UILayer"]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.0354938
+grow_horizontal = 2
+size_flags_horizontal = 4
+metadata/_edit_use_anchors_ = true
+
+[node name="Lives" type="Label" parent="UILayer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Lives: X/X"
+
+[node name="Stage" type="Label" parent="UILayer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Stage X"
+horizontal_alignment = 2
+
+[node name="Control" type="HBoxContainer" parent="UILayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_top = -26.96
+offset_bottom = -26.96
+grow_horizontal = 2
+grow_vertical = 0
+alignment = 1
+
+[node name="ColorRect" type="Sprite2D" parent="UILayer/Control"]
+material = SubResource("ShaderMaterial_jjvhh")
+scale = Vector2(1000, 10)
+texture = SubResource("CanvasTexture_jjvhh")
+
+[node name="ZingoZongo" type="HBoxContainer" parent="UILayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -209.5
+offset_top = -41.0
+offset_right = 209.5
+offset_bottom = 41.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_6bp64")
+
+[node name="Label" type="Label" parent="UILayer/ZingoZongo"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme = SubResource("Theme_kry3j")
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.501961)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+text = "zingoZongo"
+horizontal_alignment = 1

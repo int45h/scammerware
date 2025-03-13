@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c5txlf4dpo3nj"
+path="res://.godot/imported/phonk only.mp3-3ac307e14f56e79685f99480484d8b70.mp3str"
+
+[deps]
+
+source_file="res://Assets/Resources/Music/phonk only.mp3"
+dest_files=["res://.godot/imported/phonk only.mp3-3ac307e14f56e79685f99480484d8b70.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.02
+bpm=170.0
+beat_count=64
+bar_beats=4

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bw7htr870tphf"
+path="res://.godot/imported/mysterio but hes made of music.mp3-75bc7282f1aeb9866538ac90fcd23e61.mp3str"
+
+[deps]
+
+source_file="res://Assets/Resources/Music/mysterio but hes made of music.mp3"
+dest_files=["res://.godot/imported/mysterio but hes made of music.mp3-75bc7282f1aeb9866538ac90fcd23e61.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.02
+bpm=170.0
+beat_count=64
+bar_beats=4

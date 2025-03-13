@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://dkxhlj2ohmfws"]
+
+[ext_resource type="Script" uid="uid://dysys6wvcicwm" path="res://Scripts/Misc/game_captcha/CaptchaScreen.cs" id="1_b0tyg"]
+[ext_resource type="FontFile" uid="uid://q2ascbup0jio" path="res://Themes/Fonts/DayRoman-R3e.ttf" id="2_b0tyg"]
+
+[node name="TestCaptcha" type="Node2D" node_paths=PackedStringArray("CaptchaLabel")]
+script = ExtResource("1_b0tyg")
+CaptchaLabel = NodePath("CanvasLayer/Label")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -72.5
+offset_top = -39.0
+offset_right = 72.5
+offset_bottom = 39.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_b0tyg")
+theme_override_font_sizes/font_size = 250
+text = "XXXX"

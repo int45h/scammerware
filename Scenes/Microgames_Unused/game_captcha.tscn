@@ -1,0 +1,119 @@
+[gd_scene load_steps=7 format=3 uid="uid://cr5p4dcv3o14v"]
+
+[ext_resource type="Script" uid="uid://bpxb6peggjy5d" path="res://Scripts/Systems/Microgame.cs" id="1_s1a0w"]
+[ext_resource type="Script" uid="uid://duf8rv0vaqah4" path="res://Scripts/Misc/game_captcha/SubGameManager_Captcha.cs" id="2_om17s"]
+[ext_resource type="Shader" uid="uid://kfxv8aftm28m" path="res://Shaders/game_captcha.gdshader" id="3_fe8my"]
+[ext_resource type="PackedScene" uid="uid://dkxhlj2ohmfws" path="res://Scenes/test stuff/test_captcha.tscn" id="4_mewyk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3nygb"]
+shadow_color = Color(0, 0, 0, 0.407843)
+shadow_size = 20
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0r2v2"]
+shader = ExtResource("3_fe8my")
+shader_parameter/_t = 1.0
+
+[node name="Game0Test" type="Node2D"]
+script = ExtResource("1_s1a0w")
+Duration = 30.0
+StartText = "SOLVE
+THE CAPTCHA"
+EndText = "I AM NOT
+A ROBOT"
+GameTrack = "Captcha"
+
+[node name="SubGameManager" type="Node" parent="." node_paths=PackedStringArray("Game", "Captcha", "TextBox")]
+script = ExtResource("2_om17s")
+Game = NodePath("..")
+Captcha = NodePath("../CanvasLayer/Panel/ColorRect/SubViewport/TestCaptcha")
+TextBox = NodePath("../CanvasLayer/Panel/TextEdit")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="TextureRect" parent="CanvasLayer"]
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -245.0
+offset_top = -86.085
+offset_right = 245.0
+offset_bottom = 213.915
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3nygb")
+
+[node name="Button" type="Button" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -63.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Submit"
+
+[node name="TextEdit" type="TextEdit" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -99.0
+offset_top = 66.77
+offset_right = 101.0
+offset_bottom = 104.77
+grow_horizontal = 2
+grow_vertical = 2
+scroll_fit_content_height = true
+
+[node name="ColorRect" type="SubViewportContainer" parent="CanvasLayer/Panel"]
+material = SubResource("ShaderMaterial_0r2v2")
+layout_mode = 1
+offset_left = 4.0
+offset_top = 38.085
+offset_right = 761.0
+offset_bottom = 310.085
+scale = Vector2(0.635, 0.476)
+
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer/Panel/ColorRect"]
+handle_input_locally = false
+size = Vector2i(757, 272)
+render_target_update_mode = 4
+
+[node name="TestCaptcha" parent="CanvasLayer/Panel/ColorRect/SubViewport" instance=ExtResource("4_mewyk")]
+position = Vector2(504, 265)
+
+[node name="CaptchaLabel" type="Label" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -86.0
+offset_top = 106.0
+offset_right = 86.0
+offset_bottom = 132.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.529412)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/shadow_outline_size = 0
+text = "Enter Captcha"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="CanvasLayer/Panel/Button" to="SubGameManager" method="OnButtonPressed"]

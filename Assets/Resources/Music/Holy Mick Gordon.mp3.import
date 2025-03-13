@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://qbvl2jpoh4fg"
+path="res://.godot/imported/Holy Mick Gordon.mp3-36d5316873e164e864e8aaad85705d9c.mp3str"
+
+[deps]
+
+source_file="res://Assets/Resources/Music/Holy Mick Gordon.mp3"
+dest_files=["res://.godot/imported/Holy Mick Gordon.mp3-36d5316873e164e864e8aaad85705d9c.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.02
+bpm=170.0
+beat_count=64
+bar_beats=4

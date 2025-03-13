@@ -1,0 +1,40 @@
+[gd_scene load_steps=3 format=3 uid="uid://cyq8mkantjav8"]
+
+[ext_resource type="Script" uid="uid://bpxb6peggjy5d" path="res://Scripts/Systems/Microgame.cs" id="1_8cusq"]
+[ext_resource type="Script" uid="uid://dlchowxn7xyej" path="res://Scripts/Misc/game_0_test/SubGameManager.cs" id="2_iusrg"]
+
+[node name="Game0Test" type="Node2D"]
+script = ExtResource("1_8cusq")
+Duration = 5.0
+GameTrack = "Form"
+
+[node name="SubGameManager" type="Node" parent="." node_paths=PackedStringArray("Game")]
+script = ExtResource("2_iusrg")
+Game = NodePath("..")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0.41202, 0.455988, 1)
+
+[node name="Button" type="Button" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -46.5
+offset_top = -15.5
+offset_right = 46.5
+offset_bottom = 15.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "win button
+"
+
+[connection signal="pressed" from="CanvasLayer/Button" to="SubGameManager" method="OnButtonPressed"]

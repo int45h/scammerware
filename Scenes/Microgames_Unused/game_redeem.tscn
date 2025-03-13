@@ -1,0 +1,98 @@
+[gd_scene load_steps=5 format=3 uid="uid://bv6kfgvflc337"]
+
+[ext_resource type="Script" uid="uid://bpxb6peggjy5d" path="res://Scripts/Systems/Microgame.cs" id="1_vnhwc"]
+[ext_resource type="Script" uid="uid://dwkyibp7363rw" path="res://Scripts/Misc/game_0_redeem/SubGameManager_Redeem.cs" id="2_1bwfj"]
+[ext_resource type="Texture2D" uid="uid://xj37uvf4js4x" path="res://Assets/Resources/Backgrounds/bg_redeem.png" id="3_sqloh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3nygb"]
+shadow_color = Color(0, 0, 0, 0.407843)
+shadow_size = 20
+
+[node name="Game0Test" type="Node2D"]
+script = ExtResource("1_vnhwc")
+Duration = 30.0
+StartText = "REDEEM 
+THE CARD"
+EndText = "MONEY BACK
+GUARANTEED"
+GameTrack = "Redeem"
+
+[node name="SubGameManager" type="Node" parent="." node_paths=PackedStringArray("Game", "CodeLabel", "TextBox")]
+script = ExtResource("2_1bwfj")
+Game = NodePath("..")
+CodeLabel = NodePath("../CanvasLayer/CodeLabel")
+TextBox = NodePath("../CanvasLayer/Panel/TextEdit")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="TextureRect" parent="CanvasLayer"]
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_sqloh")
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -195.0
+offset_top = -62.8
+offset_right = 195.0
+offset_bottom = 137.2
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3nygb")
+
+[node name="Button" type="Button" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -63.0
+offset_top = -31.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Submit"
+
+[node name="TextEdit" type="TextEdit" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 19.77
+offset_right = 100.0
+offset_bottom = 49.77
+grow_horizontal = 2
+grow_vertical = 2
+scroll_fit_content_height = true
+
+[node name="CodeLabel" type="Label" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -72.5
+offset_top = -11.5
+offset_right = 72.5
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.529412)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/shadow_outline_size = 0
+text = "Code: XXXX-XXXX-XXXX-XXXX"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="CanvasLayer/Panel/Button" to="SubGameManager" method="OnButtonPressed"]
