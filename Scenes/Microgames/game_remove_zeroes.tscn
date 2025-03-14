@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://d31gehsmvjrii"]
 
 [ext_resource type="Script" uid="uid://bpxb6peggjy5d" path="res://Scripts/Systems/Microgame.cs" id="1_1ksg0"]
-[ext_resource type="Script" uid="uid://drf1ho4aglh6r" path="res://Scripts/Misc/game_zeroes/SubGameManager_Zeroes.cs" id="2_0hus5"]
+[ext_resource type="Script" uid="uid://drf1ho4aglh6r" path="res://Scripts/Misc/game_zeroes/SubGameManager_Zeroes.cs" id="2_5gmgb"]
 
 [node name="Game0Test" type="Node2D"]
 script = ExtResource("1_1ksg0")
@@ -13,7 +13,7 @@ WAS CLOSE"
 GameTrack = "MickeysCockBlower"
 
 [node name="SubGameManager" type="Node" parent="." node_paths=PackedStringArray("Game", "TextBox")]
-script = ExtResource("2_0hus5")
+script = ExtResource("2_5gmgb")
 Game = NodePath("..")
 TextBox = NodePath("../CanvasLayer/ColorRect/Panel/TextEdit")
 

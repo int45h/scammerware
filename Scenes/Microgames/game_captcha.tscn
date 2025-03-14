@@ -1,20 +1,20 @@
 [gd_scene load_steps=7 format=3 uid="uid://cr5p4dcv3o14v"]
 
-[ext_resource type="Script" uid="uid://bpxb6peggjy5d" path="res://Scripts/Systems/Microgame.cs" id="1_0r2v2"]
-[ext_resource type="Script" uid="uid://duf8rv0vaqah4" path="res://Scripts/Misc/game_captcha/SubGameManager_Captcha.cs" id="2_6ac7e"]
-[ext_resource type="Shader" uid="uid://kfxv8aftm28m" path="res://Shaders/game_captcha.gdshader" id="3_npvns"]
-[ext_resource type="PackedScene" uid="uid://dkxhlj2ohmfws" path="res://Scenes/test stuff/test_captcha.tscn" id="4_r7oed"]
+[ext_resource type="Script" uid="uid://bpxb6peggjy5d" path="res://Scripts/Systems/Microgame.cs" id="1_s1a0w"]
+[ext_resource type="Script" uid="uid://duf8rv0vaqah4" path="res://Scripts/Misc/game_captcha/SubGameManager_Captcha.cs" id="2_om17s"]
+[ext_resource type="Shader" uid="uid://kfxv8aftm28m" path="res://Shaders/game_captcha.gdshader" id="3_fe8my"]
+[ext_resource type="PackedScene" uid="uid://dkxhlj2ohmfws" path="res://Scenes/test stuff/test_captcha.tscn" id="4_mewyk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3nygb"]
 shadow_color = Color(0, 0, 0, 0.407843)
 shadow_size = 20
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0r2v2"]
-shader = ExtResource("3_npvns")
+shader = ExtResource("3_fe8my")
 shader_parameter/_t = 1.0
 
 [node name="Game0Test" type="Node2D"]
-script = ExtResource("1_0r2v2")
+script = ExtResource("1_s1a0w")
 Duration = 22.59
 StartText = "SOLVE
 THE CAPTCHA"
@@ -23,7 +23,7 @@ A ROBOT"
 GameTrack = "Captcha"
 
 [node name="SubGameManager" type="Node" parent="." node_paths=PackedStringArray("Game", "Captcha", "TextBox")]
-script = ExtResource("2_6ac7e")
+script = ExtResource("2_om17s")
 Game = NodePath("..")
 Captcha = NodePath("../CanvasLayer/Panel/ColorRect/SubViewport/TestCaptcha")
 TextBox = NodePath("../CanvasLayer/Panel/TextEdit")
@@ -95,7 +95,7 @@ handle_input_locally = false
 size = Vector2i(1157, 272)
 render_target_update_mode = 4
 
-[node name="TestCaptcha" parent="CanvasLayer/Panel/ColorRect/SubViewport" instance=ExtResource("4_r7oed")]
+[node name="TestCaptcha" parent="CanvasLayer/Panel/ColorRect/SubViewport" instance=ExtResource("4_mewyk")]
 position = Vector2(504, 265)
 
 [node name="CaptchaLabel" type="Label" parent="CanvasLayer"]
