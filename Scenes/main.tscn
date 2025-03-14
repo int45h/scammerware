@@ -1,21 +1,23 @@
-[gd_scene load_steps=14 format=3 uid="uid://dmk867o55eni"]
+[gd_scene load_steps=16 format=3 uid="uid://dmk867o55eni"]
 
 [ext_resource type="Script" uid="uid://lpbosace4u5q" path="res://Scripts/Misc/MainWorld.cs" id="1_bo1nx"]
 [ext_resource type="Script" uid="uid://cbdkok8mxhv0l" path="res://Scripts/Misc/GameLayer.cs" id="1_jjgbg"]
 [ext_resource type="Shader" uid="uid://biwlrpt4a4bc4" path="res://Shaders/bomb_bar.gdshader" id="3_8gbba"]
 [ext_resource type="Shader" uid="uid://c6hwn75cmao84" path="res://Shaders/screen_shader_distort.gdshader" id="3_344ge"]
 [ext_resource type="Script" uid="uid://ctisrnintp5r1" path="res://Scripts/Misc/UILayer.cs" id="3_jjvhh"]
+[ext_resource type="Script" uid="uid://25yyj6417whr" path="res://Scenes/Transition/TransLayer.cs" id="4_hptm8"]
+[ext_resource type="PackedScene" uid="uid://cc0er750lkfas" path="res://Scenes/Transition/transition_scene.tscn" id="4_ynf5e"]
 [ext_resource type="Shader" uid="uid://be3shlf5rt7mc" path="res://Shaders/screen_shader.gdshader" id="5_kry3j"]
 [ext_resource type="Script" uid="uid://c7vbrs1iuhnoq" path="res://Scripts/Misc/GameText.cs" id="6_6bp64"]
 [ext_resource type="FontFile" uid="uid://b2o1ibxmk4bhi" path="res://Themes/Fonts/PixulBrush.ttf" id="7_344ge"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ynf5e"]
-shader = ExtResource("3_344ge")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_21xkr"]
 shader = ExtResource("5_kry3j")
 shader_parameter/show = 0
 shader_parameter/timestamp = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ynf5e"]
+shader = ExtResource("3_344ge")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jjvhh"]
 shader = ExtResource("3_8gbba")
@@ -30,10 +32,11 @@ default_font_size = 50
 [node name="Node2D" type="Node2D"]
 script = ExtResource("1_bo1nx")
 
-[node name="GameLayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("UILayer", "ScreenEffects")]
+[node name="GameLayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("UILayer", "ScreenEffects", "TransLayer")]
 script = ExtResource("1_jjgbg")
 UILayer = NodePath("../UILayer")
 ScreenEffects = NodePath("../Control/ColorRect")
+TransLayer = NodePath("../TransLayer")
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="GameLayer"]
 anchors_preset = 15
@@ -50,10 +53,10 @@ handle_input_locally = false
 size = Vector2i(1152, 648)
 render_target_update_mode = 4
 
-[node name="Distortion" type="CanvasLayer" parent="."]
+[node name="Control" type="CanvasLayer" parent="."]
 
-[node name="ColorRect" type="ColorRect" parent="Distortion"]
-material = SubResource("ShaderMaterial_ynf5e")
+[node name="ColorRect" type="ColorRect" parent="Control"]
+material = SubResource("ShaderMaterial_21xkr")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -62,10 +65,31 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0.552956, 0.552956, 0.552956, 1)
 
-[node name="Control" type="CanvasLayer" parent="."]
+[node name="TransLayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("TransitionScene")]
+script = ExtResource("4_hptm8")
+TransitionScene = NodePath("SubViewportContainer/SubViewport/Node3D")
 
-[node name="ColorRect" type="ColorRect" parent="Control"]
-material = SubResource("ShaderMaterial_21xkr")
+[node name="SubViewportContainer" type="SubViewportContainer" parent="TransLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="TransLayer/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Node3D" parent="TransLayer/SubViewportContainer/SubViewport" instance=ExtResource("4_ynf5e")]
+
+[node name="Distortion" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Distortion"]
+material = SubResource("ShaderMaterial_ynf5e")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0

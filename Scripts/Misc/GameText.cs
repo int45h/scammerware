@@ -32,10 +32,10 @@ public partial class GameText : HBoxContainer
 
     private void OnScreenResized()
     {
-        var newScreenSize = this.GetViewportRect().Size;
-        Vector2 offset = m_label.GetMinimumSize() / 2.0f;
-        m_originalPosition = (m_originalPosition / m_oldScreenSize * newScreenSize) - offset;
-        m_oldScreenSize = newScreenSize;
+        //var newScreenSize = this.GetViewportRect().Size;
+        //Vector2 offset = m_label.GetMinimumSize() / 2.0f;
+        //m_originalPosition = (m_originalPosition / m_oldScreenSize * newScreenSize) - offset;
+        //m_oldScreenSize = newScreenSize;
     }
 
     private void OnShow()

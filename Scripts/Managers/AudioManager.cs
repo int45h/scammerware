@@ -57,12 +57,19 @@ public partial class AudioManager : Node
     public const string GAME_CHAINSAW           = "Chainsaw";
     public const string GAME_CHAINSAW_GORDONIO  = "ChainsawGordon";
     public const string GAME_ALPHA              = "Alpha";
+    public const string GAME_ZEROES             = "MickeysCockBlower";
 
     public const string FREEPLAY = "Freeplay";
     #endregion
 
-	private AudioStreamPlayer 	m_music_player_track1,
-						        m_music_player_track2;
+	private AudioStreamPlayer[] m_musicPlayerTrackList;
+    private int m_activeMusicStreamPlayer = 0;
+    private AudioStreamPlayer m_musicPlayer;
+    
+    private AudioStreamPlayer m_musicPlayerTrack
+    {
+        get => (m_musicPlayerTrackList[m_activeMusicStreamPlayer]);
+    }
 
 	private Dictionary<string, AudioStream_Wrapper> m_sfx,
 									                m_music;
@@ -84,7 +91,7 @@ public partial class AudioManager : Node
 
     public double DurationToBeatCount(double duration)
     {
-        if (!m_music_player_track1.Playing)
+        if (!m_musicPlayerTrack.Playing)
             return 0;
         
         return DurationToBeatCount(duration, m_music[m_activeTrack].Properties.BPM);
@@ -92,7 +99,7 @@ public partial class AudioManager : Node
 
     public double BeatCountToDuration(double beatCount)
     {
-        if (!m_music_player_track1.Playing)
+        if (!m_musicPlayerTrack.Playing)
             return 0;
         
         return BeatCountToDuration(beatCount, m_music[m_activeTrack].Properties.BPM);
@@ -195,22 +202,72 @@ public partial class AudioManager : Node
 
 	public void PlayMusic(string name)
 	{
-		m_music_player_track1.Stop();
-		m_music_player_track1.Stream = m_music[name].Stream;
-		m_music_player_track1.Bus = "Music";
+		m_musicPlayerTrack.Stop();
+		m_musicPlayerTrack.Stream = m_music[name].Stream;
+		m_musicPlayerTrack.Bus = "Music";
 
-        m_music_player_track1.Play();
+        m_musicPlayerTrack.Play();
         m_activeTrack = name;
 	}
 
+    public void PlayMusicTransition(string newTrack, double endBeat, double transLength = 4)
+    {
+        double offset = BeatCountToDuration(endBeat);
+        int newIdx = (m_activeMusicStreamPlayer + 1) % m_musicPlayerTrackList.Length;
+
+        // Increase the beat count temporarily (to accomodate the transition length)
+        string oldTrack = m_activeTrack;
+        var oldTrackMP3 = (AudioStreamMP3)m_music[oldTrack].Stream;
+        int oldBeatCount = oldTrackMP3.BeatCount;
+        oldTrackMP3.BeatCount = (int)(oldTrackMP3.BeatCount + transLength);
+        int oldIdx = m_activeMusicStreamPlayer;
+
+        // Set the playhead of the old track
+        m_musicPlayerTrack.Seek((float)offset);
+
+        // Wait until the transition is done, then stop the old track
+        var timer = this.GetTree().CreateTimer(BeatCountToDuration(transLength));
+        timer.Timeout += () => {
+            // Stop the old music player and set the new one as the active track
+            m_musicPlayerTrackList[oldIdx].Stop();
+            GD.Print($"Stopping track \"{oldTrack}\"");
+            
+            // Set the beat count back to the way it was before
+            oldTrackMP3.BeatCount = oldBeatCount;
+        };
+        
+        // Play the track in the second stream player
+        m_musicPlayerTrackList[newIdx].Stop();
+		m_musicPlayerTrackList[newIdx].Stream = m_music[newTrack].Stream;
+		m_musicPlayerTrackList[newIdx].Bus = "Music";
+        m_musicPlayerTrackList[newIdx].Play();
+        GD.Print($"Playing track {newTrack}");
+
+        m_activeTrack = newTrack;
+        m_activeMusicStreamPlayer = newIdx;
+    }
+
     public double GetPlayheadPosition() =>
-        m_music_player_track1.GetPlaybackPosition();
+        m_musicPlayerTrack.GetPlaybackPosition();
 
     public double GetCurrentBeat() =>
         DurationToBeatCount(GetPlayheadPosition(), m_music[m_activeTrack].Properties.BPM);
 
     public bool IsMusicPlaying() =>
-        m_music_player_track1.Playing;
+        m_musicPlayerTrack.Playing;
+
+    private void InitAudioStreamPlayers()
+    {
+        m_musicPlayerTrackList = new AudioStreamPlayer[2]{
+            new AudioStreamPlayer(),
+            new AudioStreamPlayer()
+        };
+        for (int i=0; i<m_musicPlayerTrackList.Length; i++)
+        {
+            this.AddChild(m_musicPlayerTrackList[i]);
+        }
+        m_activeMusicStreamPlayer = 0;
+    }
 
 	private void LoadSFX()
 	{
@@ -219,9 +276,6 @@ public partial class AudioManager : Node
 
 	private void LoadMusic()
 	{
-		m_music_player_track1 = new AudioStreamPlayer();
-		this.AddChild(m_music_player_track1);
-
         AddMusic(GAME_INTRO, MUSIC_PATH + "/intro.mp3");
         AddMusic(GAME_TRANSITION, MUSIC_PATH + "/the inbetween.mp3");
         AddMusic(GAME_REDEEM, MUSIC_PATH + "/breakcore.mp3");
@@ -232,6 +286,7 @@ public partial class AudioManager : Node
         AddMusic(GAME_CHAINSAW, MUSIC_PATH + "/Not mickgordoned.mp3");
         AddMusic(GAME_CHAINSAW_GORDONIO, MUSIC_PATH + "/Holy Mick Gordon.mp3");
         AddMusic(GAME_ALPHA, MUSIC_PATH + "/phonk only.mp3");
+        AddMusic(GAME_ZEROES, MUSIC_PATH + "/HOLY SHIT IT'S MICKEYS COCK BLOWER CAN WE GO RIDE IT.mp3");
 
         AddMusic(FREEPLAY, MUSIC_PATH + "/freeplay theing.mp3");
 	}
@@ -241,16 +296,17 @@ public partial class AudioManager : Node
 		m_sfx = new Dictionary<string, AudioStream_Wrapper>();
 		m_music = new Dictionary<string, AudioStream_Wrapper>();
 
+        InitAudioStreamPlayers();
 		LoadMusic();
 		LoadSFX();
 	}
 
 	public override void _Process(double delta)
 	{
-        if (m_music_player_track1.Playing)
+        if (m_musicPlayerTrack.Playing)
         {
-            var _as = ((AudioStreamMP3)m_music_player_track1.Stream);
-            float t = m_music_player_track1.GetPlaybackPosition() / (float)m_music[m_activeTrack].Properties.EndOffset;
+            var _as = ((AudioStreamMP3)m_musicPlayerTrack.Stream);
+            float t = m_musicPlayerTrack.GetPlaybackPosition() / (float)m_music[m_activeTrack].Properties.EndOffset;
             double currentBeat = Mathf.Floor(GetCurrentBeat());
 
             //GD.Print($"Name: {_as._GetStreamName()}");

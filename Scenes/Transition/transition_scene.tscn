@@ -1,0 +1,99 @@
+[gd_scene load_steps=18 format=3 uid="uid://cc0er750lkfas"]
+
+[ext_resource type="Shader" uid="uid://dgcps68ot1x0l" path="res://Shaders/boga.gdshader" id="1_dki6t"]
+[ext_resource type="Script" uid="uid://rakmm5p7atyc" path="res://Scripts/Misc/CameraController3D.cs" id="1_f56ht"]
+[ext_resource type="Script" uid="uid://cywyyk5e052a4" path="res://Scripts/Misc/Boga.cs" id="1_haqqr"]
+[ext_resource type="Script" uid="uid://busgeroeqwkrb" path="res://Scripts/Misc/Transition/TransitionScene.cs" id="1_w862w"]
+[ext_resource type="Texture2D" uid="uid://ded1q4p0leelh" path="res://Assets/Resources/Characters/boga_success.png" id="2_nnpit"]
+[ext_resource type="Texture2D" uid="uid://dl0t08pomtado" path="res://Assets/Resources/Characters/boga_idle.png" id="3_haqqr"]
+[ext_resource type="Texture2D" uid="uid://cu5mam73nn13g" path="res://Assets/Resources/Characters/five_success.png" id="5_wttb2"]
+[ext_resource type="Texture2D" uid="uid://scw2a5gmbyyf" path="res://Assets/Resources/Characters/five_idle.png" id="7_nx543"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_w862w"]
+render_priority = 0
+shader = ExtResource("1_dki6t")
+shader_parameter/squashFactor = 1.0
+shader_parameter/_tex = ExtResource("2_nnpit")
+shader_parameter/_tex2 = ExtResource("5_wttb2")
+shader_parameter/fivetailMode = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_8vf3m"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8vf3m"]
+render_priority = 0
+shader = ExtResource("1_dki6t")
+shader_parameter/squashFactor = 1.0
+shader_parameter/_tex = ExtResource("3_haqqr")
+shader_parameter/_tex2 = ExtResource("7_nx543")
+shader_parameter/fivetailMode = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_dki6t"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_wttb2"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_veelt"]
+size = Vector2(10, 10)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_nnpit"]
+sky_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+ground_horizon_color = Color(0.662243, 0.671743, 0.686743, 1)
+
+[sub_resource type="Sky" id="Sky_haqqr"]
+sky_material = SubResource("ProceduralSkyMaterial_nnpit")
+
+[sub_resource type="Environment" id="Environment_w862w"]
+background_mode = 2
+sky = SubResource("Sky_haqqr")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="Node3D" type="Node3D" node_paths=PackedStringArray("BogaGuy", "Camera")]
+script = ExtResource("1_w862w")
+BogaGuy = NodePath("boga")
+Camera = NodePath("Camera3D")
+
+[node name="boga" type="Node3D" parent="." node_paths=PackedStringArray("MeshFront", "MeshBack")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.30492)
+script = ExtResource("1_haqqr")
+MeshFront = NodePath("boga_front")
+MeshBack = NodePath("boga_back")
+FivetailMode = true
+
+[node name="boga_back" type="MeshInstance3D" parent="boga"]
+transform = Transform3D(-1, 8.74228e-08, 0, 8.74228e-08, 1, 0, 0, 0, -1, 0, 0, -0.0495566)
+material_override = SubResource("ShaderMaterial_w862w")
+mesh = SubResource("QuadMesh_8vf3m")
+skeleton = NodePath("../../Camera3D")
+
+[node name="boga_front" type="MeshInstance3D" parent="boga"]
+material_override = SubResource("ShaderMaterial_8vf3m")
+mesh = SubResource("QuadMesh_dki6t")
+skeleton = NodePath("../../Camera3D")
+
+[node name="wall?" type="MeshInstance3D" parent="."]
+transform = Transform3D(2.16645, 0, 1.48748, 0, 3.08267, 0, -1.71539, 0, 1.87862, -1.62209, 0, -3.17597)
+mesh = SubResource("QuadMesh_wttb2")
+skeleton = NodePath("../Camera3D")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.57, 0.56)
+script = ExtResource("1_f56ht")
+Position_A = Vector3(0, 0.57, 0.56)
+Position_B = Vector3(-1.268, 0.576, -2.578)
+Rotation_B = Vector3(0, 38.7, 0)
+
+[node name="Environment" type="Node" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -0.475841, 0)
+mesh = SubResource("QuadMesh_veelt")
+skeleton = NodePath("../..")
+
+[node name="Lighting" type="Node" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Lighting"]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Lighting"]
+environment = SubResource("Environment_w862w")

@@ -14,8 +14,8 @@ void fragment()
 {
 	vec2 uv = SCREEN_UV;
 	vec3 color = hash33(vec3((uv*.8)/SCREEN_PIXEL_SIZE, mod(TIME*256.,6400.)));
-	
-    COLOR = (show > 0) 
-		? vec4(.95+.05*color,1)*texture(tex, uv) 
+
+    COLOR = (show > 0)
+		? vec4(.95+.05*color,1)*texture(tex, uv)
 		: vec4(vec3(dot(vec3(.299,.584,.119),color)),1);
 }

@@ -1,0 +1,52 @@
+[gd_scene load_steps=3 format=3 uid="uid://d31gehsmvjrii"]
+
+[ext_resource type="Script" uid="uid://bpxb6peggjy5d" path="res://Scripts/Systems/Microgame.cs" id="1_1ksg0"]
+[ext_resource type="Script" uid="uid://drf1ho4aglh6r" path="res://Scripts/Misc/game_zeroes/SubGameManager_Zeroes.cs" id="2_0hus5"]
+
+[node name="Game0Test" type="Node2D"]
+script = ExtResource("1_1ksg0")
+Duration = 22.59
+StartText = "REMOVE
+THE ZEROES"
+EndText = "PHEW, THAT
+WAS CLOSE"
+GameTrack = "MickeysCockBlower"
+
+[node name="SubGameManager" type="Node" parent="." node_paths=PackedStringArray("Game", "TextBox")]
+script = ExtResource("2_0hus5")
+Game = NodePath("..")
+TextBox = NodePath("../CanvasLayer/ColorRect/Panel/TextEdit")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.120113, 0.0841409, 0.20931, 1)
+
+[node name="Panel" type="Panel" parent="CanvasLayer/ColorRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = 250.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextEdit" type="TextEdit" parent="CanvasLayer/ColorRect/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+wrap_mode = 1
+scroll_fit_content_width = true

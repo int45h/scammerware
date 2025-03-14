@@ -6,6 +6,10 @@
 [node name="Game0Test" type="Node2D"]
 script = ExtResource("1_lvx7b")
 Duration = 5.0
+StartText = "SURVIVE ALPHA
+MALE BOOTCAMP"
+EndText = "$18,000 FOR
+THIS????"
 GameTrack = "Alpha"
 
 [node name="SubGameManager" type="Node" parent="." node_paths=PackedStringArray("Game")]

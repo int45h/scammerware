@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b72ckbhnafnjk"
+path="res://.godot/imported/HOLY SHIT IT'S MICKEYS COCK BLOWER CAN WE GO RIDE IT.mp3-ee728aefb4df23277357078440e3268e.mp3str"
+
+[deps]
+
+source_file="res://Assets/Resources/Music/HOLY SHIT IT'S MICKEYS COCK BLOWER CAN WE GO RIDE IT.mp3"
+dest_files=["res://.godot/imported/HOLY SHIT IT'S MICKEYS COCK BLOWER CAN WE GO RIDE IT.mp3-ee728aefb4df23277357078440e3268e.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.02
+bpm=170.0
+beat_count=64
+bar_beats=4

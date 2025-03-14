@@ -1,21 +1,21 @@
 [gd_scene load_steps=7 format=3 uid="uid://cr5p4dcv3o14v"]
 
-[ext_resource type="Script" uid="uid://bpxb6peggjy5d" path="res://Scripts/Systems/Microgame.cs" id="1_s1a0w"]
-[ext_resource type="Script" uid="uid://duf8rv0vaqah4" path="res://Scripts/Misc/game_captcha/SubGameManager_Captcha.cs" id="2_om17s"]
-[ext_resource type="Shader" uid="uid://kfxv8aftm28m" path="res://Shaders/game_captcha.gdshader" id="3_fe8my"]
-[ext_resource type="PackedScene" uid="uid://dkxhlj2ohmfws" path="res://Scenes/test stuff/test_captcha.tscn" id="4_mewyk"]
+[ext_resource type="Script" uid="uid://bpxb6peggjy5d" path="res://Scripts/Systems/Microgame.cs" id="1_0r2v2"]
+[ext_resource type="Script" uid="uid://duf8rv0vaqah4" path="res://Scripts/Misc/game_captcha/SubGameManager_Captcha.cs" id="2_6ac7e"]
+[ext_resource type="Shader" uid="uid://kfxv8aftm28m" path="res://Shaders/game_captcha.gdshader" id="3_npvns"]
+[ext_resource type="PackedScene" uid="uid://dkxhlj2ohmfws" path="res://Scenes/test stuff/test_captcha.tscn" id="4_r7oed"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3nygb"]
 shadow_color = Color(0, 0, 0, 0.407843)
 shadow_size = 20
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0r2v2"]
-shader = ExtResource("3_fe8my")
+shader = ExtResource("3_npvns")
 shader_parameter/_t = 1.0
 
 [node name="Game0Test" type="Node2D"]
-script = ExtResource("1_s1a0w")
-Duration = 30.0
+script = ExtResource("1_0r2v2")
+Duration = 22.59
 StartText = "SOLVE
 THE CAPTCHA"
 EndText = "I AM NOT
@@ -23,7 +23,7 @@ A ROBOT"
 GameTrack = "Captcha"
 
 [node name="SubGameManager" type="Node" parent="." node_paths=PackedStringArray("Game", "Captcha", "TextBox")]
-script = ExtResource("2_om17s")
+script = ExtResource("2_6ac7e")
 Game = NodePath("..")
 Captcha = NodePath("../CanvasLayer/Panel/ColorRect/SubViewport/TestCaptcha")
 TextBox = NodePath("../CanvasLayer/Panel/TextEdit")
@@ -44,10 +44,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -245.0
-offset_top = -86.085
-offset_right = 245.0
-offset_bottom = 213.915
+offset_left = -395.0
+offset_top = -81.0
+offset_right = 395.0
+offset_bottom = 219.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_3nygb")
@@ -83,18 +83,18 @@ scroll_fit_content_height = true
 [node name="ColorRect" type="SubViewportContainer" parent="CanvasLayer/Panel"]
 material = SubResource("ShaderMaterial_0r2v2")
 layout_mode = 1
-offset_left = 4.0
-offset_top = 38.085
-offset_right = 761.0
-offset_bottom = 310.085
+offset_left = 30.0
+offset_top = 33.0
+offset_right = 1187.0
+offset_bottom = 305.0
 scale = Vector2(0.635, 0.476)
 
 [node name="SubViewport" type="SubViewport" parent="CanvasLayer/Panel/ColorRect"]
 handle_input_locally = false
-size = Vector2i(757, 272)
+size = Vector2i(1157, 272)
 render_target_update_mode = 4
 
-[node name="TestCaptcha" parent="CanvasLayer/Panel/ColorRect/SubViewport" instance=ExtResource("4_mewyk")]
+[node name="TestCaptcha" parent="CanvasLayer/Panel/ColorRect/SubViewport" instance=ExtResource("4_r7oed")]
 position = Vector2(504, 265)
 
 [node name="CaptchaLabel" type="Label" parent="CanvasLayer"]

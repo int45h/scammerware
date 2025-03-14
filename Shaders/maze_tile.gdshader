@@ -8,7 +8,7 @@ varying flat int instance_id;
 vec2 get_offset_with_index(int idx)
 {
 	return vec2(
-		float(idx &3), 
+		float(idx &3),
 		float(idx>>2)
 	);
 }
@@ -21,7 +21,7 @@ vec2 get_offset(int _id)
 
 
 void vertex() { instance_id = INSTANCE_ID; }
-void fragment() 
+void fragment()
 {
 	vec2 uv = vec2(UV.x, 1.-UV.y);
 	//vec2 offset = get_offset_with_index(int(floor(TIME)) % 16);

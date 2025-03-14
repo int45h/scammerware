@@ -14,15 +14,29 @@ public partial class SubGameManager_Captcha : Node
     [Export]
     public TextEdit TextBox;
 
+    [Export]
+    public int CaptchaSize = 7;
+
     private System.Random m_rng;
     private string m_captchaString = "";
-    
+
+    private string[] m_zestString = new string[]{
+        "sCAM",
+        "BOGA",
+        "POG",
+        "P0GG3RS",
+        "GRtH3ft",
+        "veggBLT",
+        "5TAIL",
+        "maRUk1"
+    };
+
     public void OnButtonPressed() => Game?.OnComplete();
     public void SubmitCode()
     {
         if (ParseCodeString(TextBox.Text))
             Game?.OnComplete();
-        else GD.Print($"Invalid code ({m_captchaString} != {Captcha.CaptchaString})");
+        else GD.Print($"Invalid code ({TextBox.Text} != {Captcha.CaptchaString})");
     }
 
     public void GenerateCaptcha()
@@ -30,9 +44,22 @@ public partial class SubGameManager_Captcha : Node
         StringBuilder sb = new StringBuilder();
         string cipher = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-        for (int i=0; i<4; i++)
-            sb.Append(cipher[m_rng.Next(0, cipher.Length - 1)]);
+        string zest = null;
+        if (m_rng.Next(0, 100) > 90)
+            zest = m_zestString[m_rng.Next(0, m_zestString.Length-1)];
 
+        int offset = 0;
+        if (zest != null)
+        {
+            sb.Append(zest);
+            offset = zest.Length;
+        }
+
+        for (int i=offset; i<7; i++)
+        {
+            sb.Append(cipher[m_rng.Next(0, cipher.Length - 1)]);
+        }
+        
         m_captchaString = sb.ToString();
         Captcha.SetCaptchaString(m_captchaString);
     }
@@ -40,7 +67,7 @@ public partial class SubGameManager_Captcha : Node
     public bool IsValidCodeString(string code)
     {
         bool valid = true;
-        if (code.Length != 4)
+        if (code.Length != CaptchaSize)
             return false;
 
         foreach (char c in code)

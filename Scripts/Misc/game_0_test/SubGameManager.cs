@@ -10,4 +10,10 @@ public partial class SubGameManager : Node
     {
         Game?.OnComplete();
     }
+
+    public override void _Ready()
+    {
+        if (Game != null)
+            Game.OnGameStart_ += () => {};   
+    }
 }

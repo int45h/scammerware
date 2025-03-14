@@ -43,9 +43,7 @@ public partial class GameManager : Node
     #region [Microgame Callbacks]
     public void OnComplete(float timeRemaining)
     {
-        GD.Print("Success");
         m_status = GameStatus.SUCCESS;
-
         EmitSignal(SignalName.ScoreEvent_, timeRemaining * 100.0f);
     }
     
@@ -167,6 +165,8 @@ public partial class GameManager : Node
         double beatOffset = AudioManager.BeatCountToDuration(currentBeat-Mathf.Ceil(currentBeat));
         double beatDuration = AudioManager.BeatCountToDuration(beatOffset + beatCount);
 
+        GD.Print($"Waiting for {beatOffset + beatCount} beats");
+
         var timer = this.GetTree().CreateTimer(beatDuration);
         timer.Timeout += () => {
             SetState(newState);
@@ -277,16 +277,20 @@ public partial class GameManager : Node
 
     private void StartGameHandler()
     {
-        AudioManager.PlayMusic(AudioManager.GAME_TRANSITION);
+        if (!AudioManager.IsMusicPlaying())
+            AudioManager.PlayMusic(AudioManager.GAME_TRANSITION);
+        else
+            AudioManager.PlayMusicTransition(AudioManager.GAME_TRANSITION, 64);
+
         m_layer?.HideScreen();
         SelectMicrogame();
         
         m_layer?.DisplayStage(Stages, m_currentGameStage);
 
-        SetStateDeferredBeat(GameState.GAME_RUNNING, 4, () => {
+        SetStateDeferredBeat(GameState.GAME_RUNNING, 16, () => {
             m_layer?.ShowScreen();
             m_layer?.SetDisplayText(m_gameList[m_currentGameIndex].StartText);
-            AudioManager.PlayMusic(m_gameList[m_currentGameIndex].GameTrack);
+            AudioManager.PlayMusicTransition(m_gameList[m_currentGameIndex].GameTrack, 32);
             m_gameList[m_currentGameIndex].Start();
         });
     }

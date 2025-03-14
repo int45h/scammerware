@@ -32,9 +32,10 @@ void fragment()
 {
     float n = perlin2d(UV*vec2(6,4)+vec2(TIME,0));
     float t = pow(2., 1.-_t) - 1.;
-    
+
     float f = mix(1.,0.,t);
     //n = sin(n*200.);
-    vec2 uvp = UV+.08*f*n;
+	float o = mix(.015, .35, .5+.5*sin(TIME*.75));
+    vec2 uvp = UV+o*f*n;
     COLOR = texture(TEXTURE,uvp);
 }

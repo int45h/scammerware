@@ -12,6 +12,9 @@ public partial class GameLayer : CanvasLayer
     [Export]
     public ColorRect ScreenEffects;
 
+    [Export]
+    public TransLayer TransLayer;
+
     public void SetDisplayText(string text) => 
         UILayer?.SetDisplayText(text);
 
@@ -55,6 +58,8 @@ public partial class GameLayer : CanvasLayer
         
         var shaderMaterial = (ShaderMaterial)ScreenEffects.Material;
         shaderMaterial.SetShaderParameter("show", 1);
+
+        TransLayer.Visible = false;
     }
 
     public void HideScreen()
@@ -64,6 +69,9 @@ public partial class GameLayer : CanvasLayer
         
         var shaderMaterial = (ShaderMaterial)ScreenEffects.Material;
         shaderMaterial.SetShaderParameter("show", 0);
+
+        TransLayer.Visible = true;
+        TransLayer.DoTransition();
     }
 
     public override void _Ready()

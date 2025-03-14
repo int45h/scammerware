@@ -12,6 +12,7 @@ public partial class Microgame : Node
         AudioManager.GAME_CHAINSAW + "," + 
         AudioManager.GAME_CHAINSAW_GORDONIO + "," + 
         AudioManager.GAME_ALPHA + "," + 
+        AudioManager.GAME_ZEROES + "," +
         AudioManager.GAME_TRANSITION;
 
     [Export]
@@ -34,13 +35,11 @@ public partial class Microgame : Node
     public float CurrentDuration = 0;
 
     private bool m_completed = false;
+    public Action<float> GameRunnerOverride;
 
     public void OnComplete()
     {
-        if (CurrentDuration <= 0.0f)
-            Manager?.OnFailed();
-
-        float timeRemaining = Duration - CurrentDuration;
+        float timeRemaining = Mathf.Max(Duration - CurrentDuration, 0);
 
         m_completed = true;
         Running = false;
@@ -65,9 +64,13 @@ public partial class Microgame : Node
     {
         if (!Running)
             return;
-        
-        CurrentDuration -= (float)delta;
-        if (CurrentDuration <= 0.0f)
-            OnFailed();
+
+        if (GameRunnerOverride == null)
+        {
+            CurrentDuration -= (float)delta;
+            if (CurrentDuration <= 0.0f)
+                OnFailed();
+        }
+        else GameRunnerOverride((float)delta);
     }
 }

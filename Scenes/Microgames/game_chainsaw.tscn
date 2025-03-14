@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://bribp8dot4abi"]
+
+[ext_resource type="Script" uid="uid://bpxb6peggjy5d" path="res://Scripts/Systems/Microgame.cs" id="1_vw755"]
+[ext_resource type="Script" uid="uid://dlchowxn7xyej" path="res://Scripts/Misc/game_0_test/SubGameManager.cs" id="2_6bkn3"]
+
+[node name="Game0Test" type="Node2D"]
+script = ExtResource("1_vw755")
+Duration = 5.0
+StartText = "WOODCHIP
+THE CARDS"
+EndText = "MONEY BACK
+NEVER!!!"
+GameTrack = "Chainsaw"
+
+[node name="SubGameManager" type="Node" parent="." node_paths=PackedStringArray("Game")]
+script = ExtResource("2_6bkn3")
+Game = NodePath("..")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
