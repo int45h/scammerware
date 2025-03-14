@@ -29,7 +29,12 @@ public partial class Destructables : Node
             return;
         }
 
-        var resource = GD.Load<PackedScene>(CardPrefabPath);
+        if (CardPrefabPath.Contains(".remap"))
+        {
+            int fuckYouIndex = CardPrefabPath.IndexOf(".remap");
+            CardPrefabPath = CardPrefabPath.Remove(fuckYouIndex);
+        }
+        var resource = ResourceLoader.Load<PackedScene>(CardPrefabPath);
         if (resource == null)
         {
             GD.Print($"Failed to load card prefab from path \"{CardPrefabPath}\"");

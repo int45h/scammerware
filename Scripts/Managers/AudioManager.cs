@@ -174,13 +174,23 @@ public partial class AudioManager : Node
 
 	public void AddAudio(string name, string filepath) 
     {
-        var track = GD.Load<AudioStream>(filepath);
+        if (filepath.Contains(".remap"))
+        {
+            int fuckYouIndex = filepath.IndexOf(".remap");
+            filepath = filepath.Remove(fuckYouIndex);
+        }
+        var track = ResourceLoader.Load<AudioStream>(filepath);
 		m_sfx.Add(name, new AudioStream_Wrapper(track, 0, 0, 0, 0, typeof(AudioStream)));
     }
 
 	public void AddMusic(string name, string filepath) 
     {
-        var track = GD.Load<AudioStream>(filepath);
+        if (filepath.Contains(".remap"))
+        {
+            int fuckYouIndex = filepath.IndexOf(".remap");
+            filepath = filepath.Remove(fuckYouIndex);
+        }
+        var track = ResourceLoader.Load<AudioStream>(filepath);
         Type type = typeof(AudioStream);
         if (!IsStreamClassOf<AudioStreamMP3>(track))
         {

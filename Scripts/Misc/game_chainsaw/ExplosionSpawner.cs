@@ -26,7 +26,12 @@ public partial class ExplosionSpawner : Node
             return;
         }
 
-        var resource = GD.Load<PackedScene>(ExplosionPrefabPath);
+        if (ExplosionPrefabPath.Contains(".remap"))
+        {
+            int fuckYouIndex = ExplosionPrefabPath.IndexOf(".remap");
+            ExplosionPrefabPath = ExplosionPrefabPath.Remove(fuckYouIndex);
+        }
+        var resource = ResourceLoader.Load<PackedScene>(ExplosionPrefabPath);
         if (resource == null)
         {
             GD.Print($"Failed to load card prefab from path \"{ExplosionPrefabPath}\"");

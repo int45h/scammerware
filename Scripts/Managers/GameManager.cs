@@ -241,6 +241,11 @@ public partial class GameManager : Node
 
     private void LoadMicrogame(string path)
     {
+        if (path.Contains(".remap"))
+        {
+            int fuckYouIndex = path.IndexOf(".remap");
+            path = path.Remove(fuckYouIndex);
+        }
         var game = ResourceLoader.Load<PackedScene>(path);
         if (game == null)
         {
