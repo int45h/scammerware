@@ -53,15 +53,15 @@ public partial class GameText : HBoxContainer
                 Mathf.Cos(angle),
                 Mathf.Sin(angle)
             );
-            this.Position = m_originalPosition + offset * idx;
+            m_label.Position = m_originalPosition + offset * idx;
         }), m_startRadius, 0.0f, m_duration);
     }
 
     public override void _Ready()
     {
-        m_originalPosition = this.Position;
         m_label = this.GetChild<Label>(0);
-        
+        m_originalPosition = m_label.Position;
+
         m_rng = new System.Random();
         offsets = new List<float>();
 

@@ -66,8 +66,8 @@ public partial class GameManager : Node
 
     [Export]
     public int Lives = 3;
-
     public int PlayerLives = 0;
+    public Action OnGameComplete;
 
     private bool m_delayed = false;
     private GameState m_state;
@@ -119,10 +119,8 @@ public partial class GameManager : Node
         {
             case GameState.COMPLETE:
                 m_state = newState;
-                AudioManager.PlayMusic(AudioManager.GAME_INTRO);
                 break;
             case GameState.GAME_START:
-
                 m_state = newState;
                 break;
             default:
@@ -282,7 +280,7 @@ public partial class GameManager : Node
         else
             AudioManager.PlayMusicTransition(AudioManager.GAME_TRANSITION, 64);
 
-        m_layer?.HideScreen();
+        m_layer?.HideScreen(m_status != GameStatus.FAILURE);
         SelectMicrogame();
         
         m_layer?.DisplayStage(Stages, m_currentGameStage);
@@ -338,7 +336,8 @@ public partial class GameManager : Node
     private void CompleteHandler()
     {
         EmitSignal(SignalName.ResetPlayer_);
-        SetState(GameState.LOADING);
+        AudioManager.StopAllMusic();
+        OnGameComplete?.Invoke();
     }
     #endregion
 

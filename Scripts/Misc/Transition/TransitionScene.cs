@@ -8,9 +8,6 @@ public partial class TransitionScene : Node3D
 
     [Export]
     public CameraController3D Camera;
-
-    private AudioManager m_audioManager;
-
     public enum TransitionState
     {
         IDLE = 0,
@@ -18,7 +15,10 @@ public partial class TransitionScene : Node3D
         BOGA,
         ZOOM_IN
     };
+
+    private AudioManager m_audioManager;
     private TransitionState m_transState = TransitionState.IDLE;
+    private bool m_gameWin = true;
 
     // TO-DO: make these actually sync up with the beat
     public void DoCameraZoomOut()
@@ -43,8 +43,9 @@ public partial class TransitionScene : Node3D
         BogaGuy.SetState(Boga.BogaState.SQUASHING);
     }
 
-    public void DoTransition()
+    public void DoTransition(bool gameWin = true)
     {
+        m_gameWin = gameWin;
         SetState(TransitionState.ZOOM_OUT);
     }
 
@@ -91,8 +92,19 @@ public partial class TransitionScene : Node3D
                 break;
             case TransitionState.ZOOM_OUT:
                 currentBeat = m_audioManager.GetCurrentBeat();
-                if (currentBeat >= .35)
-                    SetState(TransitionState.BOGA);
+                if (m_gameWin)
+                {
+                    if (currentBeat >= 1.35)
+                        SetState(TransitionState.BOGA);
+                }
+                else
+                {
+                    if (Mathf.Floor(currentBeat) >= 12)
+                    {
+                        GD.Print(currentBeat);
+                        SetState(TransitionState.ZOOM_IN);
+                    }
+                }
                 break;
             case TransitionState.BOGA:
                 currentBeat = m_audioManager.GetCurrentBeat();

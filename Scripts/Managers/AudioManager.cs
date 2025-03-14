@@ -62,6 +62,21 @@ public partial class AudioManager : Node
     public const string FREEPLAY = "Freeplay";
     #endregion
 
+    #region [ Sound Effect Names ]
+    public const string SFX_EXPLODE = "ScuffedExplosion";
+    public const string SFX_CHAINSAW = "Chainsaw";
+
+    public const string SFX_REDEEM1 = "Redeem1";
+    public const string SFX_REDEEM2 = "Redeem2";
+    public const string SFX_REDEEM3 = "Redeem3";
+    public const string SFX_REDEEM4 = "Redeem4";
+    public const string SFX_REDEEM5 = "Redeem5";
+    public const string SFX_REDEEM6 = "Redeem6";
+    public const string SFX_REDEEM7 = "Redeem7";
+    public const string SFX_REDEEM8 = "Redeem8";
+    
+    #endregion
+
 	private AudioStreamPlayer[] m_musicPlayerTrackList;
     private int m_activeMusicStreamPlayer = 0;
     private AudioStreamPlayer m_musicPlayer;
@@ -188,7 +203,7 @@ public partial class AudioManager : Node
         ));
     }
 
-	public void PlayAudio(string name, string bus)
+	public void PlayAudio(string name, string bus, float offset = 0.0f)
 	{
 		AudioStreamPlayer player = new AudioStreamPlayer();
 		this.AddChild(player);
@@ -198,6 +213,7 @@ public partial class AudioManager : Node
 
 		player.Finished += player.QueueFree;
 		player.Play();
+        player.Seek(offset);
 	}
 
 	public void PlayMusic(string name)
@@ -209,6 +225,12 @@ public partial class AudioManager : Node
         m_musicPlayerTrack.Play();
         m_activeTrack = name;
 	}
+
+    public void StopAllMusic()
+    {
+        foreach (var player in m_musicPlayerTrackList)
+            player?.Stop();
+    }
 
     public void PlayMusicTransition(string newTrack, double endBeat, double transLength = 4)
     {
@@ -271,7 +293,17 @@ public partial class AudioManager : Node
 
 	private void LoadSFX()
 	{
-		//AddAudio("click_sound",		SFX_PATH + "/guns/cg1.wav");
+		AddAudio(SFX_EXPLODE, SFX_PATH + "/deltarune_explosion.mp3");
+        AddAudio(SFX_CHAINSAW, SFX_PATH + "/chainsaw/chainsaw.mp3");
+
+        AddAudio(SFX_REDEEM1, SFX_PATH + "/redeem/redeem1.ogg");
+        AddAudio(SFX_REDEEM2, SFX_PATH + "/redeem/redeem2.ogg");
+        AddAudio(SFX_REDEEM3, SFX_PATH + "/redeem/redeem3.ogg");
+        AddAudio(SFX_REDEEM4, SFX_PATH + "/redeem/redeem4.ogg");
+        AddAudio(SFX_REDEEM5, SFX_PATH + "/redeem/redeem5.ogg");
+        AddAudio(SFX_REDEEM6, SFX_PATH + "/redeem/redeem6.ogg");
+        AddAudio(SFX_REDEEM7, SFX_PATH + "/redeem/redeem7.ogg");
+        AddAudio(SFX_REDEEM8, SFX_PATH + "/redeem/redeem8.ogg");
 	}
 
 	private void LoadMusic()

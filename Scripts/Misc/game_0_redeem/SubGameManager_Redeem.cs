@@ -1,4 +1,5 @@
 using Godot;
+using Microsoft.VisualBasic;
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -14,8 +15,11 @@ public partial class SubGameManager_Redeem : Node
     [Export]
     public TextEdit TextBox;
 
+    private AudioManager m_audioManager;
     private Random m_rng;
     private string m_codeString;
+
+    private bool m_playingSound = false;
 
     public void OnButtonPressed() => SubmitCode();
     public void SubmitCode()
@@ -113,9 +117,51 @@ public partial class SubGameManager_Redeem : Node
         ClearTextbox();
     }
 
+    private void OnGameRunning(float delta)
+    {
+        if (!Game.Running)
+            return;
+
+        Game.CurrentDuration -= (float)delta;
+        if (Game.CurrentDuration >= 2.0f && !m_playingSound)
+        {
+            m_playingSound = true;
+            PullRandomRedeemSound();
+            
+            var timer = this.GetTree().CreateTimer(4.0f);
+            timer.Timeout += () => {
+                m_playingSound = false;
+            };
+        }
+
+        if (Game.CurrentDuration <= 0.0f)
+            Game.OnFailed();
+    }
+
+    private void PullRandomRedeemSound()
+    {
+        int index = m_rng.Next(0,24)%8;
+        string sfx = AudioManager.SFX_REDEEM1;
+        switch (index)
+        {
+            case 0: sfx = AudioManager.SFX_REDEEM1; break;
+            case 1: sfx = AudioManager.SFX_REDEEM2; break;
+            case 2: sfx = AudioManager.SFX_REDEEM3; break;
+            case 3: sfx = AudioManager.SFX_REDEEM4; break;
+            case 4: sfx = AudioManager.SFX_REDEEM5; break;
+            case 5: sfx = AudioManager.SFX_REDEEM6; break;
+            case 6: sfx = AudioManager.SFX_REDEEM7; break;
+            case 7: sfx = AudioManager.SFX_REDEEM8; break;
+        }
+
+        m_audioManager.PlayAudio(sfx, AudioManager.SFX_BUS);
+    }
+
     public override void _Ready()
     {
         m_rng = new Random();
+        m_audioManager = this.GetNode<AudioManager>("/root/AudioManager");
+
         if (Game == null)
         {
             GD.PrintErr("Game not set in the inspector");
@@ -136,5 +182,7 @@ public partial class SubGameManager_Redeem : Node
                 SubmitCode();
             }
         };
+
+        Game.GameRunnerOverride += OnGameRunning;
     }
 }

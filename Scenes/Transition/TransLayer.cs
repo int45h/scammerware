@@ -6,6 +6,6 @@ public partial class TransLayer : CanvasLayer
     [Export]
     public TransitionScene TransitionScene;
 
-    public void DoTransition() =>
-        TransitionScene.DoTransition();
+    public void DoTransition(bool success = true) =>
+        TransitionScene.DoTransition(success);
 }

@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://cg1qdk0m2ktrb"]
+
+[node name="TestCursorObject" type="Node2D"]

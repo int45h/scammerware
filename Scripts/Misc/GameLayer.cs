@@ -42,15 +42,6 @@ public partial class GameLayer : CanvasLayer
             child.Reparent(m_subViewport);
     }
 
-    public void DoTransition()
-    {
-        if (ScreenEffects == null)
-            return;
-        
-        var shaderMaterial = (ShaderMaterial)ScreenEffects.Material;
-        shaderMaterial.SetShaderParameter("timestamp", (float)Time.GetTicksMsec() / 1000.0f);
-    }
-
     public void ShowScreen()
     {
         if (ScreenEffects == null)
@@ -62,7 +53,7 @@ public partial class GameLayer : CanvasLayer
         TransLayer.Visible = false;
     }
 
-    public void HideScreen()
+    public void HideScreen(bool success = true)
     {
         if (ScreenEffects == null)
             return;
@@ -71,7 +62,7 @@ public partial class GameLayer : CanvasLayer
         shaderMaterial.SetShaderParameter("show", 0);
 
         TransLayer.Visible = true;
-        TransLayer.DoTransition();
+        TransLayer.DoTransition(success);
     }
 
     public override void _Ready()

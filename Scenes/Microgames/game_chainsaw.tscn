@@ -1,19 +1,72 @@
-[gd_scene load_steps=3 format=3 uid="uid://bribp8dot4abi"]
+[gd_scene load_steps=11 format=3 uid="uid://bribp8dot4abi"]
 
 [ext_resource type="Script" uid="uid://bpxb6peggjy5d" path="res://Scripts/Systems/Microgame.cs" id="1_vw755"]
-[ext_resource type="Script" uid="uid://dlchowxn7xyej" path="res://Scripts/Misc/game_0_test/SubGameManager.cs" id="2_6bkn3"]
+[ext_resource type="Script" uid="uid://bp26aicnkwp1h" path="res://Scripts/Misc/ObjectFollowManager.cs" id="2_wiysd"]
+[ext_resource type="Script" uid="uid://c3mnm78yl5uxl" path="res://Scripts/Misc/game_chainsaw/SubGameManager_Chainsaw.cs" id="3_564cs"]
+[ext_resource type="Texture2D" uid="uid://dqxqet32fghws" path="res://Assets/Resources/Objects/chainsaw_1.png" id="4_2mxwl"]
+[ext_resource type="Texture2D" uid="uid://b25pxd7616mt4" path="res://Assets/Resources/Objects/chainsaw_2.png" id="5_gxic6"]
+[ext_resource type="Texture2D" uid="uid://c43tnbs3ijf6i" path="res://icon.svg" id="6_564cs"]
+[ext_resource type="Script" uid="uid://d2rcg10bdnrf3" path="res://Scripts/Misc/game_chainsaw/Destructables.cs" id="6_gxic6"]
+[ext_resource type="PackedScene" uid="uid://cggh50jc0smj3" path="res://Prefabs/card.tscn" id="7_1s245"]
+[ext_resource type="Script" uid="uid://h1vg7k8mbayf" path="res://Scripts/Misc/game_chainsaw/ExplosionSpawner.cs" id="9_1s245"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1s245"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_2mxwl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_gxic6")
+}],
+"loop": true,
+"name": &"chainsaw_run",
+"speed": 20.0
+}]
 
 [node name="Game0Test" type="Node2D"]
 script = ExtResource("1_vw755")
 Duration = 5.0
-StartText = "WOODCHIP
+StartText = "CHAINSAW
 THE CARDS"
 EndText = "MONEY BACK
 NEVER!!!"
 GameTrack = "Chainsaw"
 
-[node name="SubGameManager" type="Node" parent="." node_paths=PackedStringArray("Game")]
-script = ExtResource("2_6bkn3")
+[node name="ObjectFollowManager" type="Node" parent="." node_paths=PackedStringArray("DragDaddy")]
+script = ExtResource("2_wiysd")
+DragDaddy = NodePath("../AnimatedSprite2D")
+
+[node name="SubGameManager" type="Node" parent="." node_paths=PackedStringArray("Game", "FollowManager", "Destructables", "Spawner")]
+script = ExtResource("3_564cs")
 Game = NodePath("..")
+FollowManager = NodePath("../ObjectFollowManager")
+Destructables = NodePath("../Destructables")
+Spawner = NodePath("../ExplosionSpawner")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+z_index = 1
+sprite_frames = SubResource("SpriteFrames_1s245")
+animation = &"chainsaw_run"
+
+[node name="Destructables" type="Node" parent="."]
+script = ExtResource("6_gxic6")
+CardPrefabPath = "uid://cggh50jc0smj3"
+ScreenMargin = Vector2(128, 128)
+
+[node name="Sprite2D" parent="Destructables" instance=ExtResource("7_1s245")]
+position = Vector2(82, 600)
+
+[node name="Sprite2D2" type="Sprite2D" parent="Destructables"]
+position = Vector2(587, 68)
+texture = ExtResource("6_564cs")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Destructables"]
+position = Vector2(133, 195)
+texture = ExtResource("6_564cs")
+
+[node name="ExplosionSpawner" type="Node" parent="."]
+script = ExtResource("9_1s245")
+ExplosionPrefabPath = "uid://ddqga40be0dho"
